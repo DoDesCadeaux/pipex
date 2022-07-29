@@ -6,7 +6,7 @@
 /*   By: dduraku <dduraku@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 13:58:43 by dduraku           #+#    #+#             */
-/*   Updated: 2022/07/28 19:58:10 by dduraku          ###   ########.fr       */
+/*   Updated: 2022/07/29 16:59:27 by dduraku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 // ENVP PARSING : split les differents path au niveau du ":" pour chaque commande				[X]
 // ENVP PARSING : Join le PATH avec les commandes												[X]
 // ENVP PARSING : CHECK avec acces()															[X]
-// ENVP PARSING : chercher si les commandes (grep, ls, ...) existent [/!\]						[-]
+// ENVP PARSING : chercher si les commandes (grep, ls, ...) existent [/!\]						[√]
 
 
 #include "pipex.h"
@@ -51,10 +51,12 @@ char	*ft_get_path(char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	char *path;
-	char *cmd_path;
+	char *first_cmd_path;
+	char *snd_command_path;
 	
 	path = ft_get_path(envp);
-	cmd_path = ft_path_to_command(path, argv);
-	ft_arguments_protection(argc, argv, cmd_path);
+	first_cmd_path = ft_path_to_command(path, argv[2]);
+	snd_command_path = ft_path_to_command(path, argv[3]);
+	ft_arguments_protection(argc, argv, first_cmd_path, snd_command_path);
 	return (0);
 }
