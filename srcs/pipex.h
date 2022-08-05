@@ -15,6 +15,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+#include <fcntl.h>
 
 //====================PIPEX=======================
 void	ft_arguments_protection(int argc, char **argv, char *first_cmd_path, char *snd_cmd_path);

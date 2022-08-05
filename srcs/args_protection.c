@@ -6,7 +6,7 @@
 /*   By: dduraku <dduraku@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 15:20:41 by dduraku           #+#    #+#             */
-/*   Updated: 2022/07/29 17:02:52 by dduraku          ###   ########.fr       */
+/*   Updated: 2022/08/05 15:59:32 by dduraku          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,10 @@ static void	ft_nb_of_arguments(int argc)
 	}	
 }
 
-
-
-
-
 int		ft_infile_exists(const char *filename)
 {
 	return (access(filename, F_OK) == 0);
 }
-
-
-
-
 
 int		ft_command_exists(const char *path_to_command)
 {
@@ -78,9 +70,6 @@ char  *ft_path_to_command(char *path_before_cmd, char *command) //verifier si le
 	cmd_path = *ft_split(cmd_path, ' ');
 	return (cmd_path);
 }
-
-
-
 
 void	ft_arguments_protection(int argc, char **argv, char *first_cmd_path, char *snd_cmd_path)
 {
