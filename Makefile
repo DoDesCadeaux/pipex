@@ -23,12 +23,14 @@ SRCS_PATH		=	./srcs
 
 INCLUDE_PATH	=	./srcs
 
-SRCS			=	args_protection.c\
-					libft/ft_strnstr.c\
-					libft/ft_strlen.c\
-					libft/ft_strjoin.c\
-					libft/ft_split.c\
-					libft/ft_bzero.c
+SRCS			=	args_protection.c \
+					pipex.c \
+					libft/ft_strnstr.c \
+					libft/ft_strlen.c \
+					libft/ft_strjoin.c \
+					libft/ft_split.c \
+					libft/ft_bzero.c \
+					libft/ft_strdup.c
 
 MAIN			=	main.c
 

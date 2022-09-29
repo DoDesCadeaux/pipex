@@ -10,63 +10,57 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
-// ============ALLOWED FUNCTIONS============
-// External functions allowed :
-// open, close, read, write, malloc, free, perror
-// strerror, access, dup, dup2, execve, exit, fork,
-// pipe, unlink, wait, waitpid
-
-
-//===============TO DO LIST=================
-// LEGENDE : [√] = Done, [X] = TODO, [-] = Almost
-// Commencer par gerer les arguments															[√]
-// Utiliser la fonction access() pour voir si le infile existe									[√]
-// ENVP PARSING : garder la string "PATH=" 														[√]
-// ENVP PARSING : split les commandes 															[√]
-// ENVP PARSING : split les differents path au niveau du ":" pour chaque commande				[√]
-// ENVP PARSING : Join le PATH avec les commandes												[√]
-// ENVP PARSING : CHECK avec acces()															[√]
-// ENVP PARSING : chercher si les commandes (grep, ls, ...) existent [/!\]						[√]
-
-//	OPEN : Creer un fichier si pas de outfile existant
-
 #include "pipex.h"
 
 char	*ft_get_path(char **envp)
 {
-	int	i;
-	char *path;
+	int		i;
+	char	*path;
 
 	i = 0;
 	while (envp[i])
 	{
-		if ((path = ft_strnstr(envp[i], "PATH=", 5)))
+		path = ft_strnstr(envp[i], "PATH=", 5);
+		if (path != 0)
 			return (path + 5);
 		i++;
 	}
 	return (NULL);
 }
 
+void	ft_nb_of_arguments(int argc)
+{
+	if (argc != 5)
+	{
+		printf("You must have 5 arguments\n");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	free_tab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*path;
-	char	*first_cmd_path;
-	char	*snd_command_path;
-	int		infile;
-	int		outfile;
+	char	**first_cmd;
+	char	**snd_cmd;
 
+	ft_nb_of_arguments(argc);
 	path = ft_get_path(envp);
-	first_cmd_path = ft_path_to_command(path, argv[2]);
-	printf("%s\n", first_cmd_path);
-	snd_command_path = ft_path_to_command(path, argv[3]);
-	printf("%s\n", snd_command_path);
-	ft_arguments_protection(argc, argv, first_cmd_path, snd_command_path);
-
-	infile = open(argv[1], O_RDONLY);
-	outfile = open(argv[4], O_CREAT | O_RDWR, 0644);
-	if (infile < 0 || outfile < 0)
-		exit(EXIT_FAILURE);
+	first_cmd = get_command(argv[2], path);
+	snd_cmd = get_command(argv[3], path);
+	ft_arguments_protection(argv, first_cmd[0], snd_cmd[0]);
+	ft_pipex(argv, envp, first_cmd, snd_cmd);
 	return (0);
 }
