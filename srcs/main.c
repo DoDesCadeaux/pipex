@@ -28,8 +28,16 @@ char	*ft_get_path(char **envp)
 	return (NULL);
 }
 
-void	ft_nb_of_arguments(int argc)
+static void	ft_nb_of_arguments_envp(int argc, char **envp)
 {
+	int	i;
+
+	i = 0;
+	if (!envp[i])
+	{
+		write(2, "We need Envp for this project\n", 30);
+		exit(EXIT_FAILURE);
+	}
 	if (argc != 5)
 	{
 		write(2, "Must have 5 arguments\n", 22);
@@ -56,8 +64,13 @@ int	main(int argc, char **argv, char **envp)
 	char		**first_cmd;
 	char		**snd_cmd;
 
-	ft_nb_of_arguments(argc);
+	ft_nb_of_arguments_envp(argc, envp);
 	path = ft_get_path(envp);
+	if (!path)
+	{
+		write(2, "Path is unset\n", 14);
+		exit(EXIT_FAILURE);
+	}
 	first_cmd = get_command(argv[2], path);
 	snd_cmd = get_command(argv[3], path);
 	ft_arguments_protection(argv, first_cmd[0], snd_cmd[0]);

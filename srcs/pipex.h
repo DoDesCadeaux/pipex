@@ -36,7 +36,6 @@ void	ft_arguments_protection(char **argv, char *first, char *snd);
 int		ft_command_exists(const char *command);
 int		ft_infile_exists(const char *filename);
 char	*ft_path_to_command(char *path_before_cmd, char *command);
-void	ft_nb_of_arguments(int argc);
 void	ft_pipex(char **argv, char **envp, char **s, char **c);
 void	free_tab(char **tab);
 char	**get_command(char *command, char *path_before_command);
