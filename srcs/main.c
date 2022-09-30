@@ -58,12 +58,22 @@ void	free_tab(char **tab)
 	free(tab);
 }
 
+static void	protect_empy_cmd(char **argv)
+{
+	if (argv[2][0] == '\0' || argv[3][0] == '\0')
+	{
+		write(2, "command line empty\n", 19);
+		exit(EXIT_FAILURE);
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char		*path;
 	char		**first_cmd;
 	char		**snd_cmd;
 
+	protect_empy_cmd(argv);
 	ft_nb_of_arguments_envp(argc, envp);
 	path = ft_get_path(envp);
 	if (!path)

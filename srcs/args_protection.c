@@ -24,8 +24,12 @@ int	ft_command_exists(const char *path_to_command)
 
 static void	command_error(char *command)
 {
-	write(2, command, sizeof(command));
+	int	size;
+
+	size = ft_strlen(command) + 1;
+	write(2, command, size);
 	write(2, " : command not found\n", 21);
+	exit(EXIT_FAILURE);
 }
 
 char	**get_command(char *command, char *path)
