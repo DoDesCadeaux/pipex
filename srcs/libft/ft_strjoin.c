@@ -12,7 +12,7 @@
 
 #include "../pipex.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char const *s2)
 {
 	size_t		i;
 	size_t		j;
@@ -30,5 +30,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (++j < ft_strlen(s2))
 		dest[i++] = s2[j];
 	dest[i] = '\0';
+	free(s1);
 	return (dest);
 }

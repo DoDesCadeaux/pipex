@@ -28,30 +28,24 @@ static int	fork_safe(void)
 	return (pid);
 }
 
-static void	write_pipe(int pid, char **first, int fd[2], int in, char **envp)
+static void	write_pipe(char **first, int fd[2], int in, char **envp)
 {
-	if (pid == 0)
-	{
-		dup2(in, STDIN_FILENO);
-		close(in);
-		dup2(fd[WRITE], STDOUT_FILENO);
-		close_pipe(fd);
-		execve(first[0], first, envp);
-		exit(0);
-	}
+	dup2(in, STDIN_FILENO);
+	close(in);
+	dup2(fd[WRITE], STDOUT_FILENO);
+	close_pipe(fd);
+	execve(first[0], first, envp);
+	exit(0);
 }
 
-static void	read_pipe(int pid, char **second, int fd[2], int out, char **envp)
+static void	read_pipe(char **second, int fd[2], int out, char **envp)
 {
-	if (pid == 0)
-	{
-		dup2(out, STDOUT_FILENO);
-		close(out);
-		dup2(fd[READ], STDIN_FILENO);
-		close_pipe(fd);
-		execve(second[0], second, envp);
-		exit(0);
-	}
+	dup2(out, STDOUT_FILENO);
+	close(out);
+	dup2(fd[READ], STDIN_FILENO);
+	close_pipe(fd);
+	execve(second[0], second, envp);
+	exit(0);
 }
 
 void	ft_pipex(char **argv, char **envp, char **first, char **snd)
@@ -67,9 +61,11 @@ void	ft_pipex(char **argv, char **envp, char **first, char **snd)
 		exit(EXIT_FAILURE);
 	pipe(fd);
 	pid = fork_safe();
-	write_pipe(pid, first, fd, infile, envp);
+	if (pid == 0)
+		write_pipe(first, fd, infile, envp);
 	pid = fork_safe();
-	read_pipe(pid, snd, fd, outfile, envp);
+	if (pid == 0)
+		read_pipe(snd, fd, outfile, envp);
 	close_pipe(fd);
 	close(infile);
 	close(outfile);

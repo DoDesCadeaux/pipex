@@ -32,7 +32,7 @@ void	ft_nb_of_arguments(int argc)
 {
 	if (argc != 5)
 	{
-		printf("You must have 5 arguments\n");
+		write(2, "Must have 5 arguments\n", 22);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -52,9 +52,9 @@ void	free_tab(char **tab)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*path;
-	char	**first_cmd;
-	char	**snd_cmd;
+	char		*path;
+	char		**first_cmd;
+	char		**snd_cmd;
 
 	ft_nb_of_arguments(argc);
 	path = ft_get_path(envp);
@@ -62,5 +62,7 @@ int	main(int argc, char **argv, char **envp)
 	snd_cmd = get_command(argv[3], path);
 	ft_arguments_protection(argv, first_cmd[0], snd_cmd[0]);
 	ft_pipex(argv, envp, first_cmd, snd_cmd);
+	free_tab(first_cmd);
+	free_tab(snd_cmd);
 	return (0);
 }

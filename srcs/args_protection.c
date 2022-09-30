@@ -22,29 +22,39 @@ int	ft_command_exists(const char *path_to_command)
 	return (access(path_to_command, F_OK));
 }
 
+static void	command_error(char *command)
+{
+	write(2, command, sizeof(command));
+	write(2, " : command not found\n", 21);
+}
+
 char	**get_command(char *command, char *path)
 {
-	int		i;
-	char	**full_cmd;
-	char	**path_before_cmd;
+	t_struct	va;
 
-	full_cmd = ft_split(command, ' ');
-	path_before_cmd = ft_split(path, ':');
-	i = 0;
-	while (path_before_cmd[i])
+	va.full_cmd = ft_split(command, ' ');
+	va.path_before_cmd = ft_split(path, ':');
+	va.i = 0;
+	while (va.path_before_cmd[va.i])
 	{
-		path_before_cmd[i] = ft_strjoin(path_before_cmd[i], "/");
-		path_before_cmd[i] = ft_strjoin(path_before_cmd[i], full_cmd[0]);
-		if (ft_command_exists(path_before_cmd[i]) == 0)
+		va.cmddup = ft_strdup(va.path_before_cmd[va.i]);
+		va.cmdjoin = ft_strjoin(va.cmddup, "/");
+		va.cmdjoin = ft_strjoin(va.cmdjoin, va.full_cmd[0]);
+		if (ft_command_exists(va.cmdjoin) == 0)
 		{
-			full_cmd[0] = ft_strdup(path_before_cmd[i]);
-			return (full_cmd);
+			free(va.full_cmd[0]);
+			va.full_cmd[0] = ft_strdup(va.cmdjoin);
+			free_tab(va.path_before_cmd);
+			free(va.cmdjoin);
+			return (va.full_cmd);
 		}
-		else
-			free(path_before_cmd[i]);
-		i++;
+		free(va.cmdjoin);
+		va.i++;
 	}
-	return (NULL);
+	free_tab(va.path_before_cmd);
+	free_tab(va.full_cmd);
+	command_error(command);
+	exit(2);
 }
 
 void	ft_arguments_protection(char **argv, char *first_cmd, char *snd_cmd)
